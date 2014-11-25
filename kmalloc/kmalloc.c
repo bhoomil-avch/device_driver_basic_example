@@ -10,12 +10,15 @@
 #include<linux/mm_types.h>
 #include<linux/gfp.h>
 #include<linux/mm.h>
-#include<linux/mutex.h>
-#include<asm/spinlock.h>
 
-static DEFINE_SPINLOCK(mr_lock);
 
-MODULE_AUTHOR("DEVANG");
+
+
+
+
+
+
+MODULE_AUTHOR("Bhoomil Chavda");
 MODULE_DESCRIPTION("A simple char device driver");
 
 int times;
@@ -44,16 +47,15 @@ struct file_operations my_fops={
 static int r_init(void)
 {
 printk("<1>Device Registered\n");
-if(register_chrdev(85,"My_Driver",&my_fops)){
+if(register_chrdev(87,"My_Char",&my_fops)){
 	printk("<1>failed to register");
-	
 }
 return 0;
 }
 static void r_cleanup(void)
 {
 printk("<1>Device Unregistered\n");
-unregister_chrdev(85,"My_Driver");
+unregister_chrdev(87,"My_Char");
 return ;
 }
 
@@ -72,8 +74,6 @@ int my_open(struct inode *inode,struct file *filep)
 	if(buff==NULL)
 	printk("Memory is not available any more\n");
 	printk("Memory is available\n");
-	//init_MUTEX(&my_sem);
-	//init_MUTEX_LOCKED(&my_sem);
 	
 	
 	/*MOD_INC_USE_COUNT;*/ /* increments usage count of module */
@@ -94,7 +94,6 @@ int my_release(struct inode *inode,struct file *filep)
 }
 ssize_t my_read(struct file *filep,char *buff,size_t count,loff_t *offp )
 {
-	
 	/* function to copy kernel space buffer to user space*/
 	printk("Reading from the device\n");
 	if ( copy_to_user(buff,my_data,strlen(my_data)) != 0 )
@@ -104,15 +103,12 @@ ssize_t my_read(struct file *filep,char *buff,size_t count,loff_t *offp )
 }
 ssize_t my_write(struct file *filep,const char *buff,size_t count,loff_t *offp )
 {
-	spin_lock(&mr_lock);
-	/*{
-	printk("Semaphore Acquired\n");
-	}*/
+	
 	/* function to copy user space buffer to kernel space*/
 	printk("Writing into the device\n");
 	if ( copy_from_user(my_data,buff,count) != 0 )
 		printk( "Userspace -> kernel copy failed!\n" );
-	//spin_unlock(&mr_lock);
+	
 	return 0;
 }
 

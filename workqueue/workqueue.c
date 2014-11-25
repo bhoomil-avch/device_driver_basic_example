@@ -13,7 +13,7 @@
 
 
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("DEVANG");
+MODULE_AUTHOR("Bhoomil Chavda");
 MODULE_DESCRIPTION("A simple char device driver");
 
 
@@ -32,10 +32,11 @@ int my_open(struct inode *inode,struct file *filep);
 int my_release(struct inode *inode,struct file *filep);
 ssize_t my_read(struct file *filep,char *buff,size_t count,loff_t *offp );
 ssize_t my_write(struct file *filep,const char *buff,size_t count,loff_t *offp );
-void my_interrupt();
 
+void my_interrupt(unsigned long);
 
-struct  work_struct my_work={
+struct  work_struct my_work =
+{
 	.func = my_interrupt,
 };
 
@@ -52,9 +53,8 @@ static int r_init(void)
 printk("<1>Device Registered\n");
 if(register_chrdev(85,"my_driver",&my_fops)){
 	printk("<1>failed to register");
-	
-}
 	INIT_WORK(&my_work,my_interrupt);
+}
 return 0;
 }
 static void r_cleanup(void)
@@ -67,7 +67,11 @@ return ;
 }
 
 
-
+void my_interrupt(unsigned long i)
+{
+	printk("INTERRUPT IS GENERATED\n");
+	wake_up_interruptible(&wait);
+}
 
 
 int my_open(struct inode *inode,struct file *filep)
@@ -84,13 +88,6 @@ int my_release(struct inode *inode,struct file *filep)
 	printk("char driver release\n");
 	return 0;
 }
-
-void my_interrupt()
-{
-	printk("INTERRUPT IS GENERATED\n");
-	wake_up_interruptible(&wait);
-}
-
 ssize_t my_read(struct file *filep,char *buff,size_t count,loff_t *offp )
 {
 	/* function to copy kernel space buffer to user space*/
@@ -117,7 +114,7 @@ ssize_t my_write(struct file *filep,const char *buff,size_t count,loff_t *offp )
 	printk("Writing into the device\n");
 	struct task_struct *current;	
 	printk("Process %i awoken\n",current->pid);
-	flag = 1;
+	//flag = 1;
         //wake_up_interruptible(&wait);
 
 

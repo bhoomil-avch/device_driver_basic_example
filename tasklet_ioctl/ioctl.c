@@ -123,4 +123,5 @@ return 0;
 module_init(hello_init);
 module_exit(hello_exit);
 
+MODULE_AUTHOR("Bhoomil Chavda");
 MODULE_LICENSE("GPL");

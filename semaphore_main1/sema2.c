@@ -12,14 +12,14 @@
 #include<linux/mm.h>
 #include<linux/mutex.h>
 
-static DEFINE_MUTEX(mutex);
+static DECLARE_MUTEX(my_sem);
 
 
 
 
-MODULE_LICENSE("GPL");
-MODULE_AUTHOR("DEVANG");
-MODULE_DESCRIPTION("Device Driver using mutex");
+
+MODULE_AUTHOR("Bhoomil Chavda");
+MODULE_DESCRIPTION("A simple char device driver");
 
 int times;
 char *buff;
@@ -49,9 +49,9 @@ static int r_init(void)
 printk("<1>Device Registered\n");
 if(register_chrdev(89,"My_Char_Device",&my_fops)){
 	printk("<1>failed to register");
-	
+	//init_MUTEX(&my_sem);
+	sema_init(&my_sem,3);
 }
-	mutex_init(&mutex);
 return 0;
 }
 static void r_cleanup(void)
@@ -108,7 +108,7 @@ ssize_t my_read(struct file *filep,char *buff,size_t count,loff_t *offp )
 }
 ssize_t my_write(struct file *filep,const char *buff,size_t count,loff_t *offp )
 {
-	mutex_lock(&mutex);
+	down_interruptible(&my_sem);
 	/*{
 	printk("Semaphore Acquired\n");
 	}*/
@@ -116,7 +116,7 @@ ssize_t my_write(struct file *filep,const char *buff,size_t count,loff_t *offp )
 	printk("Writing into the device\n");
 	if ( copy_from_user(my_data,buff,count) != 0 )
 		printk( "Userspace -> kernel copy failed!\n" );
-	//mutex_unlock(&mutex);
+	//up(&my_sem);
 	return 0;
 }
 

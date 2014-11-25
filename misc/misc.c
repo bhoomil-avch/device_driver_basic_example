@@ -11,8 +11,8 @@
 
 
 MODULE_LICENSE("GPL");
-MODULE_AUTHOR("nikunj");
-MODULE_DESCRIPTION("Device demo");
+MODULE_AUTHOR("Bhoomil Chavda");
+MODULE_DESCRIPTION("misc kernel module");
 
 static int dev_open(struct inode *,struct file*);
 static int dev_release(struct inode *,struct file *);

@@ -16,8 +16,8 @@
 //#define READ 1
 // module attributes
 MODULE_LICENSE("GPL"); 
-MODULE_DESCRIPTION("Device Driver ");
-MODULE_AUTHOR("Deep Shah");
+MODULE_DESCRIPTION("ioctl test");
+MODULE_AUTHOR("Bhoomil Chavda");
 
 struct test_ioctl {
         char data[64];
