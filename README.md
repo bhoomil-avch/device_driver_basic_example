@@ -4,7 +4,8 @@ EDGE device software for IMPP
 1. Tested with Python 3.5.2 version.
 2. Dependencies for impp-edge for both Linux and Windows host machine.
   * Python version specific dependencies for opcua lib from python-opcua,
-    * For Python > 3.4 using pip install command install,
+  * Using pip install command install
+    * For Python > 3.4,
       * cryptography
       * python-dateutil
       * pytz
