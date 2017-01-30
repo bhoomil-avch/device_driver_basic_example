@@ -4,9 +4,9 @@ EDGE device software for IMPP
 1. Tested with Python 3.5.2 version.
 2. Dependencies for impp-edge for both Linux and Windows host machine.
   * Python version specific dependencies for opcua lib from python-opcua,
-    * For Python > 3.4
-	  * cryptography
-	  * python-dateutil
+    * For Python > 3.4 using pip install command install,
+      * cryptography
+      * python-dateutil
       * pytz
     * For Python 2.7 or < 3
       * enum34
@@ -14,6 +14,5 @@ EDGE device software for IMPP
       * futures(concurrent.futures)
   * Dependencies for IoT Data Distribution module,
       * requests
-  All above modules can be install using "pip install (ModuleName)"
   * One more dependency is web.py module, install that using following syntax,
       * easy_install web.py
